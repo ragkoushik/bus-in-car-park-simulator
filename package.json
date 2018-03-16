@@ -1,0 +1,13 @@
+{
+    "name": "bus-in-car-park-simulator",
+    "version": "1.0.0",
+    "description": "The application is a simulation of a bus moving in a 5x5 car park",
+    "main": "start.js",
+    "scripts": {
+        "test": "jasmine",
+        "start": "node start.js"
+    },
+    "keywords": [
+    ],
+    "author": "Raghu Koushik"
+}
