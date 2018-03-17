@@ -1,6 +1,6 @@
 Bus in Carpark Simulator
 
->>> Description & Constraints
+Description & Constraints
 
 	- The application is a simulation of a robot operated bus moving in a carpark, of
 		dimensions 5 units x 5 units.
@@ -37,7 +37,7 @@ Bus in Carpark Simulator
 		- Provide test data to exercise the application.
 
 
->>> System Dependencies & Configuration
+System Dependencies & Configuration
 
 	To run the app, you'll need:
 
@@ -50,24 +50,30 @@ Bus in Carpark Simulator
 		run on cmd
 		npm install -g jasmine
 
->>> Operating Instructions
+Operating Instructions
 
 	You have two options to send commands to the robot driver.   
 		- The first option is to type in commands in command prompt.   
-		- The second option is to provide a file with commands. Some sample sample data have been attached in the sampleData folder.  
+		- The second option is to provide a file with commands. 
+			Some sample sample data have been attached in the sampleData folder.  
 
-	To operate the robot by typing commands, start the app from the command prompt with no arguments provided and begin type in commands:
+	To operate the robot by typing commands, start the app from the command prompt with 
+	no arguments provided and begin type in commands:
 
 		$ npm start
 		Hi there!
-		Begin by placing the Robot on the tabletop - PLACE X, Y, F Eg: 1,1, South (case insensitive, spaces are acceptable instead of commas). or 'q' to exit.
+		Begin by placing the Robot on the tabletop - PLACE X, Y, F 
+			Eg: 1,1, South (case insensitive, spaces are acceptable instead of commas)
+			. or 'q' to exit.
 		> PLACE 1,1, North
 		> right
 		> move
 		> report
 		Robot's position is: 2, 1, EAST
 
-	To operate the robot using a file, create a file with commands, some sample examples have been attached in sampleData folder ./../sampleData/a.txt, with the following contents:
+	To operate the robot using a file, create a file with commands, 
+		some sample examples have been attached in sampleData folder ./../sampleData/a.txt, 
+		with the following contents:
 		- PLACE X,Y,F or PLACE X Y F (spaces are acceptable instead of commas)
 		- MOVE
 		- LEFT
@@ -79,13 +85,14 @@ Bus in Carpark Simulator
 			node start.js sampleData\a.txt
 			Reading commands from 'sampleData\a.txt' .... please wait.
 			Hi there!
-			Begin by placing the Robot on the tabletop - PLACE X, Y, F Eg: 1,1, South (case insensitive, spaces are acceptable instead of commas). or 'q' to exit.
+			Begin by placing the Robot on the tabletop - PLACE X, Y, F Eg: 1,1, South 
+				(case insensitive, spaces are acceptable instead of commas). or 'q' to exit.
 			> PLACE 0,0,NORTH
 			> MOVE
 			> REPORT
 			Robot's position is: 0, 1, NORTH
 
->>> Testing Instructions 
+Testing Instructions 
 
 		Run `npm test` to run all the tests. Or specify the name of the spec against which to run tests: 
 		
@@ -94,7 +101,7 @@ Bus in Carpark Simulator
 		npm test spec/messengerSpec.js 	// test messenger functionality only, runs messengerSpec
 		npm test spec/carParkSpec.js 	// test tabletop functionality only, runs carParkSpec
 
->>> Components
+Components
 
 	The application consists of 5 (five) components:
 
@@ -104,7 +111,8 @@ Bus in Carpark Simulator
 	- BusFactory    
 	- BusSimulator    
 
-	**Bus** is a class that represents a Bus and defines its functionality. There are public methods to control the robot driver:
+	**Bus** is a class that represents a Bus and defines its functionality. 
+		There are public methods to control the robot driver:
 
 		- place(x, y, f)   
 		- move()    
@@ -113,9 +121,11 @@ Bus in Carpark Simulator
 		- report()   
 		- getMessenger()  
 
-		The bus's dependencies are: the Messenger instance and the CarPark instance. The bus's configuration data is stored in `config.js` file.   
+		The bus's dependencies are: the Messenger instance and the CarPark instance. 
+		The bus's configuration data is stored in `config.js` file.   
 
-	**Messenger** is a class that incapsulates all the behaviour of preparing any messages a robot driver can send to a user. It is the bus's dependency. 
+	**Messenger** is a class that incapsulates all the behaviour of preparing any messages a robot driver can send to a user. 
+		It is the bus's dependency. 
 		It has only one public method that the bus calls when it has some message to a user:    
 
 		- getMessage(msgConfigObj)    
@@ -129,13 +139,16 @@ Bus in Carpark Simulator
 
 		The car park's configuration data is stored in `config.js` file.   
 
-	**BusFactory** is a factory class that assembles the bus, that is resolves all its dependencies, injects them into the bus, instantiates the bus and returns the instance to the caller.    
+	**BusFactory** is a factory class that assembles the bus, that is resolves all its dependencies, 
+		injects them into the bus, instantiates the bus and returns the instance to the caller.    
 
-	**BusSimulator** is a module that combines all components together into a one usable application. It has only one static method that starts all the magic of the app:
+	**BusSimulator** is a module that combines all components together into a one usable application. 
+		It has only one static method that starts all the magic of the app:
 
 		- BusSimulator.run()   
 
-		The entry point of the application is  `start.js` file. It requres **BusSimulator** and runs the app. It only consists of two lines of code:
+		The entry point of the application is  `start.js` file. It requres **BusSimulator** and runs the app. 
+		It only consists of two lines of code:
 
 		```javascropt
 		var app = require('./app/BusSimulator');
