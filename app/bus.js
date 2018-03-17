@@ -1,9 +1,5 @@
 'use strict';
 
-var config = require('./config');
-module.exports = Bus;
-
-
 /**
  * The Bus class. Bus's constructor function.
  * The Bus's dependencies are: the Playground and the Messenger instances
@@ -12,7 +8,7 @@ module.exports = Bus;
  * @param {Messenger} messenger The Messenger instance
  * @constructor
  */
-function Bus(config, carPark, messenger) {
+var Bus = function (config, carPark, messenger) {
 
     this._config = config,
 	this.carPark = carPark,
@@ -28,9 +24,7 @@ function Bus(config, carPark, messenger) {
 		y: undefined,
 		f: undefined
 	};
-}
-
-var prototype = {
+	
     /**
      * To PLACE the Bus
      * @param  {INT|String} x X-coordinate
@@ -41,7 +35,7 @@ var prototype = {
      * successfully, it returns a corresponding Error instance
      * @public
      */
-    place: function(x, y, f) {
+    this.place = function(x, y, f) {
 
         var arg = {};
 
@@ -52,7 +46,7 @@ var prototype = {
             return e;
         }
 
-        // PLACE a Bus only inside of the playground
+        // PLACE a Bus only inside of the car park
         if (this._isOutOfcarPark(arg.x, arg.y)) {
             return new Error(this._messenger.getMessage({
                 msg: 'wrongPlace'
@@ -67,7 +61,7 @@ var prototype = {
             this._isFirstStepMade = true;
 
         return this;
-    },
+    };
 
     /**
      * To MOVE the Bus. It is not possible to move the Bus if no initial
@@ -76,7 +70,7 @@ var prototype = {
      * any error occurred
      * @public
      */
-    move: function() {
+    this.move = function() {
         var x, y, f;
 
         // Check if initial PLACE command was made
@@ -117,14 +111,14 @@ var prototype = {
         this._setBusPosition(x, y, this._config.aDirections[f]);
 
         return this;
-    },
+    };
 
     /**
      * To turn the Bus to the right, that is change its FACE
      * @return {Error|Bus}   If succsess it returs this, if not
      * success, it returns a corresponding Error instance
      */
-    right: function() {
+    this.right = function() {
         if (!this._isFirstStepMade) {
             return new Error(this._messenger.getMessage({
                 msg: 'noInitialCommand'
@@ -134,13 +128,14 @@ var prototype = {
             (this._oCurrentPosition.f + 1) > 3 ?
             0 : this._oCurrentPosition.f + 1;
         return this;
-    },
+    };
+	
     /**
      * To turn the Bus to the left, that is change its FACE
      * @return {Error|Bus}   If succsess it returs this, if not
      * success, it returns a corresponding Error instance
      */
-    left: function() {
+    this.left = function() {
         if (!this._isFirstStepMade) {
             return new Error(this._messenger.getMessage({
                 msg: 'noInitialCommand'
@@ -150,14 +145,15 @@ var prototype = {
             (this._oCurrentPosition.f - 1) < 0 ?
             3 : this._oCurrentPosition.f - 1;
         return this;
-    },
+    };
+	
     /**
      * Send a message to a user
      * @param  {Object} msgObj {msg 'msgKey', [anyOtherKeys: ....]}
      * Possible keys are defined in the config.
      * @return {[type]}        [description]
      */
-    report: function(msgObj) {
+    this.report = function(msgObj) {
         // Call .report() without any parameters.
         if (!msgObj) {
             var oPosition = this._getBusPosition();
@@ -181,7 +177,8 @@ var prototype = {
             }
         } else
             return this._messenger.getMessage(msgObj);
-    },
+    };
+	
     /**
      * Validate user input for PLACEX,Y,F command. X and Y should be INTs or a
      * String that can be converted to INT
@@ -193,7 +190,7 @@ var prototype = {
      * correct-FACE-word}. F is returned only UPPERCASED!
      * @private
      */
-    _validateInput: function(x, y, f) {
+    this._validateInput = function(x, y, f) {
 
         // FACE cannot be undefined
         if (!f) {
@@ -241,8 +238,9 @@ var prototype = {
             y: _y,
             f: _f
         };
-    },
-    _isCommandValid: function() {},
+    };
+	
+    this._isCommandValid = function() {};
 
     /**
      * Check if FACE is a valid word, that is 'NORTH', 'EAST', 'SOUTH' or 'WEST'
@@ -250,9 +248,10 @@ var prototype = {
      * @return  {Boolean}
      * @private
      */
-    _isDirectionValid: function(sFace) {
+    this._isDirectionValid = function(sFace) {
         return this._config.aDirections.indexOf(sFace) !== -1;
-    },
+    };
+	
     /**
      * Update the Bus's position
      * @param   {INT} x x-coordinate
@@ -260,12 +259,13 @@ var prototype = {
      * @param   {String} f FACE, 'NORTH', 'EAST', 'SOUTH' or 'WEST' (uppercased)
      * @private
      */
-    _setBusPosition: function(x, y, f) {
+    this._setBusPosition = function(x, y, f) {
         this._oCurrentPosition.x = x,
             this._oCurrentPosition.y = y,
             this._oCurrentPosition.f = this._config
             .aDirections.indexOf(f);
-    },
+    };
+	
     /**
      * Check if action is performed inside of the playground
      * @param   {INT}  x x-coordinate
@@ -273,50 +273,54 @@ var prototype = {
      * @return  {Boolean}
      * @private
      */
-    _isOutOfcarPark: function(x, y) {
+    this._isOutOfcarPark = function(x, y) {
         return this.carPark.isOutOfcarPark(x, y);
-    },
+    };
+	
     /**
      * Getter.
      * @return  {Object} {x: int-x, y: int-y, f: FACE-word (uppercased)}
      * @private
      */
-    _getBusPosition: function() {
+    this._getBusPosition = function() {
         return {
             x: this._oCurrentPosition.x,
             y: this._oCurrentPosition.y,
             f: this._config.aDirections[this._oCurrentPosition.f]
         }
-    },
+    };
 
     /**
-     * These methods are for the sake of testing or for a development fun
+     * These methods are for the sake of testing
      */
-    _getIsFirstStepMade: function() {
+    this._getIsFirstStepMade = function() {
         return this._isFirstStepMade;
-    },
-    _isFirstStepMadeFunc: function() {
+    };
+	
+    this._isFirstStepMadeFunc = function() {
         if (!this._isFirstStepMade) {
             return this.report({
                 msg: 'noInitialCommand'
             });
         } else
             return true;
-    },
-    _setIsFirstStepMade: function(val) {
+    };
+	
+    this._setIsFirstStepMade = function(val) {
         this._isFirstStepMade = val;
-    },
+    };
 
     /**
      * Get Messenger instance
      * @return {Messenger} messenger instance
      * @public
      */
-    getMessenger: function() {
+    this.getMessenger = function() {
         return this._messenger;
-    },
+    };
 
 }
 
-Bus.prototype = Object.create(prototype);
-Bus.prototype.constructor = Bus;
+
+module.exports = Bus;
+

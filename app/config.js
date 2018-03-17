@@ -5,7 +5,7 @@
  * It consists of configs for:
  *   Bus class
  *   Messenger class
- *   carPark class
+ *   CarPark class
  */
 
 var config = {};
@@ -30,21 +30,21 @@ config.bus = {
 config.messenger = {
     oMsgs: {
         noInitialCommand: 		'Warning! You haven\'t placed the bus on the car park yet. Type "PLACE X, Y, F" Eg: 1,1, South {ci} to place it on the car park.',
-        placebusFirst: 			'Nothing to report - no buss found on the car park. Re-try after placing one, to begin - PLACE X, Y, F.',
-        wrongPlace: 			'Error! Invalid coordinate specified. That square is out of the tabletop.',
+        placebusFirst: 			'Nothing to report - no buses found on the car park. Re-try after placing one, to begin - PLACE X, Y, F.',
+        wrongPlace: 			'Error! Invalid coordinate specified. That square is out of the car park.',
         wrondDirection: 		'Error! Invalid direction. Available directions are: {availableDirections}',
-        noFace: 				'Error! No FACE was provided. Correct form is: PLACE X, Y, FACE.',
+        noFace: 			'Error! No FACE was provided. Correct form is: PLACE X, Y, FACE.',
         faceNotString: 			'Error! FACE is not a string.',
         unknownCommand: 		'Error! Command is incorrect or unknown. Available commands are: {availableCommands}',
         busPosition: 			'bus\'s position is: {x}, {y}, {f}',
-        noNegativeCoordinates: 	'Error! Negative coordinates are not allowed.... Try again.',
+        noNegativeCoordinates:          'Error! Negative coordinates are not allowed.... Try again.',
         nonIntCoordinates: 		'Warning! Coordinates must be integers.',
-        wrongMove: 				'Warning! You cannot move the bus that way, it can fall.',
-        default: 				'Hi there! Welcome to Toy bus Simulator . Start by placing a bus on the tabletop, PLACE X, Y, F {ci} Eg: 1,1, South.',
+        wrongMove: 			'Warning! You cannot move the bus that way, it can fall.',
+        default: 			'Hi there! Welcome to Toy bus Simulator . Start by placing a bus on the tabletop, PLACE X, Y, F {ci} Eg: 1,1, South.',
         someCombinedMsg: 		'For the {s} of testing: PLACE {x}, {y}, {z} in {country}',
         fileNotFound: 			'Error! File \'{fileName}\' was not found. Make sure you specified its path correctly.',
-		fileRead: 				'Reading commands from \'{fileName}\' .... please wait.{eol}',
-        welcome: 				'Hi there!{eol}Begin by placing the bus on the car park - PLACE X, Y, F Eg: 1,1, South {ci}. or \'q\' to exit.',
+        fileRead: 			'Reading commands from \'{fileName}\' .... please wait.{eol}',
+        welcome: 			'Hi there!{eol}Begin by placing the bus on the car park - PLACE X, Y, F Eg: 1,1, South {ci}. or \'q\' to exit.',
     },
     oSubs: {
         availableDirections: config.bus.aDirections.join(', '),

@@ -9,20 +9,20 @@
 /**
  * Declare and initialize variables
  */
-var os = require("os"), 					// to have platform independent EOL
-    stdin = process.stdin,					// standard input handle
+var os = require("os"), 				// to have platform independent EOL
+    stdin = process.stdin,				// standard input handle
     stdout = process.stdout,				// standard output handle
     stderr = process.stderr,				// standard error handle
-    bus = require('./busFactory'), 		// creates bus instance
+    bus = require('./busFactory'), 			// creates bus instance
     EOL = os.EOL, 							 
-    fs = require('fs'), 					// to check if a file exists and is readable and to create a stream
-    readline = require('readline'), 		// Readline class. To read commands from a file
-    rl, 									// readline instance
-    argv, 									// for cli arguments, particularly to get a file path
-    messenger = bus.getMessenger(); 		// to interact with users
+    fs = require('fs'), 				// to check if a file exists and is readable and to create a stream
+    readline = require('readline'),                     // Readline class. To read commands from a file
+    rl, 						// readline instance
+    argv, 						// for cli arguments, particularly to get a file path
+    messenger = bus.getMessenger();                     // to interact with users
 
 stdin.setEncoding('utf8');
-process.title = "*****Bus in a car park Simulator*****"; // Terminal title
+process.title = "Bus in a car park Simulator"; // Terminal title
 
 argv = process.argv.slice(2); // get only the name of the file from user prompt
 
@@ -81,7 +81,7 @@ if (argv.length) {
  * string, or the bus instance. A successful action returns bus's instance.
  * @private
  */
-function processCmd(cmd) {
+var processCmd = function (cmd) {
     var res;
     // PLACE X(,| )Y(,| )F(  *)
     if (cmd.match(/^\s*place\s+\w+(?:,?\s*|\s+)\w+(?:,?\s*|\s+)\w+\s*$/i)) {
@@ -101,7 +101,7 @@ function processCmd(cmd) {
         }));
     }
     return res;
-}
+};
 
 /**
  * Sends a response from processCmd() to stdout or stderr
@@ -109,7 +109,7 @@ function processCmd(cmd) {
  * or bus instance.
  * @return {undefined}      no return. the func only sends to stdout or stderr
  */
-function outputMesage(data) {
+var outputMesage = function (data) {
     var res, _data = data.trim();
 
     if (_data.match(/(q|quit|exit)/i))
@@ -123,14 +123,14 @@ function outputMesage(data) {
     } else {
         stdout.write('> ');
     }
-}
+};
 
 
 /**
  * BusSimulator class
  * It has only one static method .run() to start the app
  */
-function BusSimulator() {};
+var BusSimulator = function () {};
 
 /**
  * @static
@@ -141,7 +141,7 @@ BusSimulator.run = function() {
         eol: EOL
     }) + EOL + '> ');
     stdin.resume();
-}
+};
 
 
 module.exports = BusSimulator;

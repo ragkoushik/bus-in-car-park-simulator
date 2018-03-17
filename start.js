@@ -4,5 +4,5 @@
  * It is the starting point of the application.
  */
 
-var app = require('./app/simulator');
+var app = require('./app/busSimulator');
 app.run();
