@@ -22,6 +22,7 @@ config.carPark = {
     lengthX: 5,
     lengthY: 5
 };
+config.defaultPort = 3000;
 config.bus = {
     aCommands: ['PLACE', 'MOVE', 'LEFT', 'RIGHT', 'REPORT'],
     initialCommands: ['PLACE'],

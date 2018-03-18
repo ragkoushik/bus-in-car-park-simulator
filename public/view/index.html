@@ -1,0 +1,123 @@
+<!doctype html>
+<html ng-app="busInCarParkSimulator">
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="/js/app.js"></script>
+        <title>Bus in Carpark Simulator</title>
+        <style>
+            .EAST {
+                /* Safari */
+                -webkit-transform: rotate(-90deg);
+
+                /* Firefox */
+                -moz-transform: rotate(-90deg);
+
+                /* IE */
+                -ms-transform: rotate(-90deg);
+
+                /* Opera */
+                -o-transform: rotate(-90deg);
+                
+                font-size:48px;
+                
+                color:red
+
+            }
+            .WEST {
+                /* Safari */
+                -webkit-transform: rotate(90deg);
+
+                /* Firefox */
+                -moz-transform: rotate(90deg);
+
+                /* IE */
+                -ms-transform: rotate(90deg);
+
+                /* Opera */
+                -o-transform: rotate(90deg);
+                
+                font-size:48px;
+                
+                color:red
+            }
+            
+            .NORTH {
+                /* Safari */
+                -webkit-transform: rotate(180deg);
+                /* Firefox */
+                -moz-transform: rotate(180deg);
+                /* IE */
+                -ms-transform: rotate(180deg);
+                /* Opera */
+                -o-transform: rotate(180deg);
+                font-size:48px;
+                color:red
+            }
+            
+            .SOUTH {
+                font-size:48px;
+                color:red
+            }
+        </style>
+    </head>
+    <body class="container" ng-controller="busCtrl"  ng-keydown="keyCmds($event)">
+        <div class="container-fluid">
+          <div class="row content">
+            <div class="col-sm-12 sidenav hidden-xs">
+              <h2>Bus in Carpark Simulator</h2>
+            </div>
+            <br>
+            <div class="col-sm-3">
+                <div class="alert alert-info">
+                    <h4>Instructions </h4>
+                    <ul> 
+                        <li> Start by placing the bus on the car park PLACE X, Y, F Or use the UP arrow key to place it at 0,0, NORTH</li><br/>
+                        <li> <b> Available Commands: </b> {{config.messenger.oSubs.availableCommands}} </li><br/>
+                        <li> <b> Available Directions: </b> {{config.messenger.oSubs.availableDirections}} <br/></li><br/>
+                        <li> Use the up, down, left right arrows on the keyboard to change direction and move in the direction.</li><br/>
+                    </ul> 
+                </div>
+            </div>   
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="well">
+                            <h4>Execute Command</h4>
+                            <div class="input-group">
+                                <input type="text" ng-model="command"  class="form-control" placeholder="Enter Command ...">
+                                <span class="input-group-btn">
+                                  <input class="btn btn-default" type="submit" ng-click="controlBus(command)" value="Run" />
+                                </span>
+                            </div> <br/>
+                           
+                        </div>
+                    </div>
+                    <div  class="col-sm-8">  
+                        <p  ng-if="success !== undefined && !success" class="alert alert-danger"> {{message}} </p> 
+                        <p  ng-if="success !== undefined && success && message !== undefined" class="alert alert-success"> {{message}} </p> 
+                    </div>
+                </div>
+               
+                <div class="well">  
+                    <h4>Car Park  </h4> 
+                    <p ng-if="currentPos.x !== undefined && currentPos.y !== undefined" class="pull-left">Current Position {{currentPos.x}}, {{currentPos.y}}, {{currentPos.f}}</p>
+                    <p class="pull-right"> {{config.carPark.lengthX}} x {{config.carPark.lengthY}}</p> <br/>
+                    <table class="table table-bordered table-striped">
+                        <tr ng-repeat="row in carPark">
+                              <td ng-repeat="column in row" >
+                                  <p style="min-width:50px; min-height: 50px;" title="x:{{column.x}}, y:{{column.y}}"> <i ng-if="currentPos.x === column.x && currentPos.y === column.y" class="fa fa-bus {{ currentPos.f }}"></i> </p> 
+                              </td>
+                        </tr>
+                    </table> 
+                    <p ng-if="currentPos.x === undefined || currentPos.y === undefined"><i class="fa fa-bus NORTH"></i> Entering car park, place the bus on the park<p> 
+                </div>
+            </div>
+          </div>
+        </div>
+        
+    </body>
+</html>

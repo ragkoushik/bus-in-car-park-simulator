@@ -16,9 +16,15 @@ var os = require("os"), 				// to have platform independent EOL
     bus = require('./busFactory'), 			// creates bus instance
     EOL = os.EOL, 							 
     fs = require('fs'), 				// to check if a file exists and is readable and to create a stream
+    http = require('http'),
+    url = require('url'),
+    path = require('path'),
+    util = require('util'),
     readline = require('readline'),                     // Readline class. To read commands from a file
     rl, 						// readline instance
     argv, 						// for cli arguments, particularly to get a file path
+    config = require('./config'),
+    path = require('path'),
     messenger = bus.getMessenger();                     // to interact with users
 
 stdin.setEncoding('utf8');
@@ -34,41 +40,114 @@ stdin.on('data', function(data) {
 });
 
 
-// this piece of code is for reading commands from a file
+
 if (argv.length) {
-    try {
-        fs.accessSync(argv[0], fs.F_OK | fs.R_OK)
-    } catch (e) {
-        stderr.write(messenger.getMessage({
-            msg: 'fileNotFound',
-            fileName: argv[0]
-        }));
-        process.exit();
+    // Input from front end
+    if ( argv[0] !== undefined && argv[0].indexOf('--port') !== -1) { 
+        var root = path.dirname(require.main.filename);
+        var port = argv[1] || config.defaultPort;
+        
+        http.createServer(function (req, res) { 
+            var pathname = url.parse(req.url).pathname;
+            var m;
+            if (pathname == '/') {
+                bus._resetBusPosition(); 
+                res.writeHead(200, {'Content-Type': 'text/html'});
+                fs.createReadStream(root + '/public/view/index.html').pipe(res);
+                return;
+            } 
+            else if (m = pathname.match(/^\/js\//)) {
+                var filename = root + '/public' + pathname;
+                var stats = fs.existsSync(filename) && fs.statSync(filename);
+                if (stats && stats.isFile()) {
+                    res.writeHead(200, {'Content-Type' : 'application/javascript'});
+                    fs.createReadStream(filename).pipe(res);
+                    return;
+                }
+            }
+            else if (pathname == '/fetch-simulator-config'){
+                res.writeHead(200, {'Content-Type' : 'application/json'});
+                res.write(JSON.stringify({config: config}));
+                res.end();
+                return;
+            }
+            else if (req.method == 'POST' && pathname == '/control-bus'){
+                var body = '';
+                var message,success;
+                req.on('data', function (data) {
+                    body += data;
+                });
+
+                req.on('end', function () {
+                    var jsonObj = JSON.parse(body);
+                    var message, success;
+                    if (jsonObj !== undefined && jsonObj.cmd !== undefined ) {
+                        var output = outputMesage(jsonObj.cmd);
+                        if (output instanceof Error) {
+                            message =  output.message;
+                            success = false;
+                        } else if (typeof output == 'string') {
+                            message = output;
+                            success = true;
+                        } else {
+                            success = true;
+                        }
+
+                        var currentPos = bus.currentPosition();
+                        res.writeHead(200, {'Content-Type' : 'application/json'});
+                        res.write(JSON.stringify({message: message, success:success, currentPos: currentPos}));
+                        res.end();
+                    } 
+                    else {
+                        return;
+                    }
+                });
+                
+            }
+            else {
+                res.writeHead(404, {'Content-Type': 'text/plain'});
+                res.write('404 Not Found\n');
+                res.end();
+            }
+        }).listen(port, 'localhost');
+
+        console.log('Server running on port ' + port);
     }
-	
-	stderr.write(messenger.getMessage({
+    else { // this piece of code is for reading commands from a file
+        try {
+            fs.accessSync(argv[0], fs.F_OK | fs.R_OK)
+        } catch (e) {
+            stderr.write(messenger.getMessage({
+                msg: 'fileNotFound',
+                fileName: argv[0]
+            }));
+            process.exit();
+        }
+
+        stderr.write(messenger.getMessage({
             msg: 'fileRead',
             fileName: argv[0],
-			eol: EOL
+                        eol: EOL
         }));
-		
-    rl = readline.createInterface({
-        input: fs.createReadStream(argv[0]),
-        terminal: false
-    });
 
-    // event handler. is called when a line is read from a file
-    rl.on('line', function(line) {
-        stdout.write(line + EOL);
-        outputMesage(line);
-    });
+        rl = readline.createInterface({
+            input: fs.createReadStream(argv[0]),
+            terminal: false
+        });
 
-    // event handler. is called when all the lines in a file have been read
-    // closes a stream and exit
-    rl.on('close', function() {
-        rl.close();
-        process.exit();
-    });
+        // event handler. is called when a line is read from a file
+        rl.on('line', function(line) {
+            stdout.write(line + EOL);
+            outputMesage(line);
+        });
+
+        // event handler. is called when all the lines in a file have been read
+        // closes a stream and exit
+        rl.on('close', function() {
+            rl.close();
+            process.exit();
+        });
+    }
 }
 
 
@@ -116,12 +195,18 @@ var outputMesage = function (data) {
         process.exit();
 
     res = processCmd(_data);
-    if (res instanceof Error) {
-        stdout.write(res.message + EOL + '> ');
-    } else if (typeof res == 'string') {
-        stdout.write(res + EOL + '> ');
+    
+    // send response to UI if being operated from the UI
+    if (argv[0] !== undefined && argv[0].indexOf('--port') !== -1) {
+        return res;
     } else {
-        stdout.write('> ');
+        if (res instanceof Error) {
+            stdout.write(res.message + EOL + '> ');
+        } else if (typeof res == 'string') {
+            stdout.write(res + EOL + '> ');
+        } else {
+            stdout.write('> ');
+        }
     }
 };
 

@@ -178,6 +178,20 @@ var Bus = function (config, carPark, messenger) {
         } else
             return this._messenger.getMessage(msgObj);
     };
+    
+    /**
+     * Send the current locatoion of the bus
+     * @return {Object}  {x: correct-int-x, y: correct-int-y, f:
+     * correct-FACE-word}. F is returned only UPPERCASED!
+    */
+    this.currentPosition = function () {
+        var oPosition = this._getBusPosition();
+        return  {
+                    x: oPosition.x,
+                    y: oPosition.y,
+                    f: oPosition.f
+                };
+    };
 	
     /**
      * Validate user input for PLACEX,Y,F command. X and Y should be INTs or a
@@ -288,6 +302,17 @@ var Bus = function (config, carPark, messenger) {
             y: this._oCurrentPosition.y,
             f: this._config.aDirections[this._oCurrentPosition.f]
         }
+    };
+    
+    /**
+     * Getter.
+     * @return  {Object} {x: int-x, y: int-y, f: FACE-word (uppercased)}
+     * @private
+     */
+    this._resetBusPosition = function() {
+        this._oCurrentPosition.x = undefined;
+        this._oCurrentPosition.y = undefined;
+        this._oCurrentPosition.f = undefined;
     };
 
     /**
