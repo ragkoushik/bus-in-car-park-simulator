@@ -114,7 +114,7 @@ Operating Instructions
             UP arrow key to place it at 0,0, NORTH facing.
 
             Further instruction on how to operate the bus can be found on the UI.
-        
+            ![alt text](https://github.com/ragkoushik/bus-in-car-park-simulator/blob/master/UI.PNG)
 
 Testing Instructions 
 
