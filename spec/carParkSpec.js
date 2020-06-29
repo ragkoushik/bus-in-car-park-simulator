@@ -1,44 +1,42 @@
-'use strict';
-
 /**
  * Testing robot position on carPark
  */
-var CarPark = require('./../app/carPark');
-var config = require('./../app/config');
+const CarPark = require('./../app/carPark');
+const config = require('./../app/config');
 
 
-describe('carPark', function() {
-    var carPark,
-        xOuts = [config.carPark.startPointX - 1, config.carPark.lengthX],
-        yOuts = [config.carPark.startPointY - 1, config.carPark.lengthY],
-        yIns = [config.carPark.startPointY, config.carPark.lengthY - 1],
-        xIns = [config.carPark.startPointX, config.carPark.lengthX - 1];
+describe('carPark', () => {
+    let carPark;
+    const xOuts = [config.carPark.startPointX - 1, config.carPark.lengthX];
+    const yOuts = [config.carPark.startPointY - 1, config.carPark.lengthY];
+    const yIns = [config.carPark.startPointY, config.carPark.lengthY - 1];
+    const xIns = [config.carPark.startPointX, config.carPark.lengthX - 1];
 
-    beforeAll(function() {
+    beforeAll(() => {
         carPark = new CarPark(config.carPark);
     });
 
     function loopInvalidY(x, y) {
-        it('shoud return invalid = TRUE if Y coordinate is OUTSIDE carPark', function() {
+        it('shoud return invalid = TRUE if Y coordinate is OUTSIDE carPark', () => {
             expect(carPark.isOutOfcarPark(x, y)).toBe(true);
         });
     }
 
     function loopValidY(x, y) {
-        it('shoud return invalid = FALSE if Y coordinate is INSIDE carPark', function() {
+        it('shoud return invalid = FALSE if Y coordinate is INSIDE carPark', () => {
             expect(carPark.isOutOfcarPark(x, y)).toBe(false);
         });
     }
 
 
     function loopInvalidX(x, y) {
-        it('shoud return invalid = TRUE if X coordinate is OUTSIDE carPark', function() {
+        it('shoud return invalid = TRUE if X coordinate is OUTSIDE carPark', () => {
             expect(carPark.isOutOfcarPark(x, y)).toBe(true);
         });
     }
 
     function loopValidX(x, y) {
-        it('shoud return invalid = FALSE if X coordinate is INSIDE carPark', function() {
+        it('shoud return invalid = FALSE if X coordinate is INSIDE carPark', () => {
             expect(carPark.isOutOfcarPark(x, y)).toBe(false);
         });
     }
@@ -78,5 +76,4 @@ describe('carPark', function() {
             loopValidX(xIns[i], y);
         }
     }
-
 });

@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * bus Simulator app. Master module that starts the simmulator 
  * app. It requires the bus instance and uses its methods to
@@ -23,8 +21,9 @@ const os = require("os"), 				// to have platform independent EOL
     config = require('./config'),
     messenger = bus.getMessenger(),                     // to interact with users
     dotenv = require('dotenv');
-    dotenv.config();
-var rl, 						// readline instance
+dotenv.config();
+let // readline instance
+    rl,
     argv; 						// for cli arguments, particularly to get a file path
 
 stdin.setEncoding('utf8');
@@ -51,11 +50,11 @@ if (argv.length) {
             if (pathname == '/') {
                 bus._resetBusPosition();
                 res.writeHead(200, { 'Content-Type': 'text/html' });
-                fs.createReadStream(root + '/public/view/index.html').pipe(res);
+                fs.createReadStream(`${root}/public/view/index.html`).pipe(res);
                 return;
             }
             else if (m = pathname.match(/^\/js\//)) {
-                const filename = root + '/public' + pathname;
+                const filename = `${root}/public${pathname}`;
                 const stats = fs.existsSync(filename) && fs.statSync(filename);
                 if (stats && stats.isFile()) {
                     res.writeHead(200, { 'Content-Type': 'application/javascript' });
@@ -65,7 +64,7 @@ if (argv.length) {
             }
             else if (pathname == '/fetch-simulator-config') {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.write(JSON.stringify({ config: config }));
+                res.write(JSON.stringify({ config }));
                 res.end();
                 return;
             }
@@ -92,7 +91,7 @@ if (argv.length) {
 
                         const currentPos = bus.currentPosition();
                         res.writeHead(200, { 'Content-Type': 'application/json' });
-                        res.write(JSON.stringify({ message: message, success: success, currentPos: currentPos }));
+                        res.write(JSON.stringify({ message, success, currentPos }));
                         res.end();
                     }
                     else {
@@ -108,7 +107,7 @@ if (argv.length) {
             }
         }).listen(port, 'localhost');
 
-        console.log('Server running on port ' + port);
+        console.log(`Server running on port ${port}`);
     }
     else if (argv[0] !== undefined && argv[0].indexOf('--port') !== -1 && process.env.TURN_OFF_UI == 'true') {
         console.log('\x1b[31m','UI has been turned off in env' );
@@ -162,7 +161,7 @@ if (argv.length) {
  * @private
  */
 const processCmd = (cmd) => {
-    var res;
+    let res;
     // PLACE X(,| )Y(,| )F(  *)
     if (cmd.match(/^\s*place\s+\w+(?:,?\s*|\s+)\w+(?:,?\s*|\s+)\w+\s*$/i)) {
         const params = cmd.trim().split(/(?:\s+|,\s*)/i).slice(1);
@@ -190,7 +189,8 @@ const processCmd = (cmd) => {
  * @return {undefined}      no return. the func only sends to stdout or stderr
  */
 const outputMesage = (data) => {
-    var res, _data = data.trim();
+    let res;
+    const _data = data.trim();
 
     if (_data.match(/(q|quit|exit)/i))
         process.exit();
@@ -202,9 +202,9 @@ const outputMesage = (data) => {
         return res;
     } else {
         if (res instanceof Error) {
-            stdout.write(res.message + EOL + '> ');
+            stdout.write(`${res.message + EOL}> `);
         } else if (typeof res == 'string') {
-            stdout.write(res + EOL + '> ');
+            stdout.write(`${res + EOL}> `);
         } else {
             stdout.write('> ');
         }
@@ -222,10 +222,10 @@ const BusSimulator = () => { };
  * @static
  */
 BusSimulator.run = () => {
-    stdout.write(messenger.getMessage({
-        msg: 'welcome',
-        eol: EOL
-    }) + EOL + '> ');
+    stdout.write(`${messenger.getMessage({
+    msg: 'welcome',
+    eol: EOL
+}) + EOL}> `);
     stdin.resume();
 };
 

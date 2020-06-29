@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * The Bus class. Bus's constructor function.
  * The Bus's dependencies are: the Playground and the Messenger instances
@@ -37,7 +35,7 @@ const Bus = function (config, carPark, messenger) {
      */
     this.place = function (x, y, f) {
 
-        var arg = {};
+        let arg = {};
 
         // Validate user input
         try {
@@ -71,7 +69,7 @@ const Bus = function (config, carPark, messenger) {
      * @public
      */
     this.move = function () {
-        var x, y, f;
+        let x, y, f;
 
         // Check if initial PLACE command was made
         if (!this._isFirstStepMade) {
@@ -254,7 +252,7 @@ const Bus = function (config, carPark, messenger) {
         };
     };
 
-    this._isCommandValid = function () { };
+    this._isCommandValid = () => { };
 
     /**
      * Check if FACE is a valid word, that is 'NORTH', 'EAST', 'SOUTH' or 'WEST'

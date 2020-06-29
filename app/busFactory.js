@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Toy bus Factory
  * It assembles a bus instance, injects its dependencies.

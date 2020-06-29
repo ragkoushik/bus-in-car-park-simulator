@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * The Messenger class, constructor
  * @param {object} config Messenger's config
@@ -42,7 +40,7 @@ const Messenger = function (config) {
 
 		const str = this._config.oMsgs[oCombined.msg].replace(
 			/{(\w+)}/g,
-			function (match, p) {
+			(match, p) => {
 				return oCombined[p];
 			});
 		return str;

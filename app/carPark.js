@@ -1,6 +1,3 @@
-'use strict';
-
-
 /**
  * The CarPark class, constructor
  * @param {object} config CarPark's config

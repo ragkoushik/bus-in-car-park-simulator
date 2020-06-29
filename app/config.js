@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Config object
  * It consists of configs for:
@@ -49,11 +47,10 @@ config.messenger = {
     },
     oSubs: {
         availableDirections: config.bus.aDirections.join(', '),
-        availableCommands: [config.bus.aCommands.reduce(function (prev,
-            cur) {
+        availableCommands: [config.bus.aCommands.reduce((prev, cur) => {
             if (prev == 'PLACE')
                 prev = [prev, 'X, Y, F'].join(' ');
-            return prev + ' | ' + cur;
+            return `${prev} | ${cur}`;
         }), '.'].join(''),
         ci: '(case insensitive, spaces are acceptable instead of commas)',
         country: 'New Zealand'

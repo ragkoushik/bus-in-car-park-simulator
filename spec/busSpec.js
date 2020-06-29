@@ -5,36 +5,36 @@
  * 
  */
 
-var CarPark = require('./../app/carPark');
-var Messenger = require('./../app/messenger');
-var config = require('./../app/config');
-var Bus = require('./../app/bus');
+const CarPark = require('./../app/carPark');
+const Messenger = require('./../app/messenger');
+const config = require('./../app/config');
+const Bus = require('./../app/bus');
 
-describe('Bus Simmulator', function() {
+describe('Bus Simmulator', () => {
     var bus;
     var carPark;
     var messenger;
     var x, y, f;
     var aDirections;
 
-    beforeAll(function() {
+    beforeAll(() => {
         messenger = new Messenger(config.messenger);
     });
 
-    beforeEach(function() {
+    beforeEach(() => {
         bus = new Bus(config.bus,
             new CarPark(config.carPark),
             messenger);
     });
 
-    it('coordinates should be undefined at start', function() {
+    it('coordinates should be undefined at start', () => {
         var oPosition = bus._getBusPosition();
         expect(oPosition.x == undefined &&
             oPosition.y == undefined &&
             oPosition.f == undefined).toBe(true);
     });
 
-    it('should report its position', function() {
+    it('should report its position', () => {
         var x = 1,
             y = 2,
             f = 'east';
@@ -49,13 +49,13 @@ describe('Bus Simmulator', function() {
         }));
     });
 
-    it('should say "place me first to begin" at start', function() {
+    it('should say "place me first to begin" at start', () => {
         expect(bus.report()).toEqual(messenger.getMessage({
             msg: 'placebusFirst'
         }));
     });
 
-    it('should not accept nonInt X or Y', function() {
+    it('should not accept nonInt X or Y', () => {
         var x = "foo",
             y = "1,4",
             f = "south";
@@ -65,7 +65,7 @@ describe('Bus Simmulator', function() {
             })));
     });
 
-    it('should not accept undefined FACE', function() {
+    it('should not accept undefined FACE', () => {
         var x = "foo",
             y = "1,4",
             f;
@@ -75,7 +75,7 @@ describe('Bus Simmulator', function() {
             })));
     });
 
-    it('should not accept non-string FACE', function() {
+    it('should not accept non-string FACE', () => {
         var x = "foo",
             y = "1,4",
             f = 100;
@@ -85,7 +85,7 @@ describe('Bus Simmulator', function() {
             })));
     });
 
-    it('should not accept negative Y in PLACE', function() {
+    it('should not accept negative Y in PLACE', () => {
         var x = 0,
             y = -1,
             f = 'south';
@@ -95,7 +95,7 @@ describe('Bus Simmulator', function() {
             })));
     });
 
-    it('should not accept negative X in PLACE', function() {
+    it('should not accept negative X in PLACE', () => {
         x = -1, y = 0, f = 'south';
         expect(bus.place(x, y, f)).toEqual(new TypeError(
             messenger.getMessage({
@@ -103,7 +103,7 @@ describe('Bus Simmulator', function() {
             })));
     });
 
-    it('should not accept invalid FACING words', function() {
+    it('should not accept invalid FACING words', () => {
         x = 2, y = 3, f = 'foo';
         expect(bus.place(x, y, f)).toEqual(new TypeError(
             messenger.getMessage({
@@ -111,7 +111,7 @@ describe('Bus Simmulator', function() {
             })));
     });
 
-    it('should not be placed outside the carPark', function() {
+    it('should not be placed outside the carPark', () => {
         x = 0, y = 6, f = 'north';
         expect(bus.place(x, y, f)).toEqual(new Error(
             messenger.getMessage({
@@ -120,13 +120,13 @@ describe('Bus Simmulator', function() {
     });
 
     it('should have "_isFirstStepMade = false" before initial PLACE',
-        function() {
+        () => {
             expect(bus._getIsFirstStepMade()).toBe(false);
         }
     );
 
     it('should set "_isFirstStepMade = true" upon successful initial PLACE',
-        function() {
+        () => {
             var x = 3,
                 y = 3,
                 f = 'south';
@@ -134,7 +134,7 @@ describe('Bus Simmulator', function() {
             expect(bus._getIsFirstStepMade()).toBe(true);
         });
 
-    it('should change X, Y upon successful place', function() {
+    it('should change X, Y upon successful place', () => {
         var x = 3,
             y = 3,
             f = 'south',
@@ -149,14 +149,14 @@ describe('Bus Simmulator', function() {
             oPositionEnd.f == f.toUpperCase()).toBe(true);
     });
 
-    it('should return itself if PLACE was successful', function() {
+    it('should return itself if PLACE was successful', () => {
         x = 1, y = 1, f = 'south';
         expect(bus.place(x, y, f)).toEqual(bus);
     });
 
     it(
         'should not accept MOVE command before initial PLACE command',
-        function() {
+        () => {
             expect(bus.move()).toEqual(new Error(
                 messenger.getMessage({
                     msg: 'noInitialCommand'
@@ -164,7 +164,7 @@ describe('Bus Simmulator', function() {
         });
 
 
-    it('should not be able to step out of the carPark', function() {
+    it('should not be able to step out of the carPark', () => {
         var x = 4,
             y = 0,
             f = 'east';
@@ -175,7 +175,7 @@ describe('Bus Simmulator', function() {
             })));
     });
 
-    it('should successfully make a correct MOVE', function() {
+    it('should successfully make a correct MOVE', () => {
         var x = 1,
             y = 1,
             f = 'east',
@@ -188,21 +188,21 @@ describe('Bus Simmulator', function() {
     });
 
 
-    it('should not turn RIGHT before initial PLACE was made', function() {
+    it('should not turn RIGHT before initial PLACE was made', () => {
         expect(bus.right()).toEqual(new Error(
             messenger.getMessage({
                 msg: 'noInitialCommand'
             })));
     });
 
-    it('should not turn LEFT before initial PLACE was made', function() {
+    it('should not turn LEFT before initial PLACE was made', () => {
         expect(bus.left()).toEqual(new Error(
             messenger.getMessage({
                 msg: 'noInitialCommand'
             })));
     });
 
-    it('should turn LEFT (change face)', function() {
+    it('should turn LEFT (change face)', () => {
         var x = 1,
             y = 1,
             f = 'north';
@@ -211,7 +211,7 @@ describe('Bus Simmulator', function() {
         expect(bus._getBusPosition().f).toEqual('WEST');
     });
 
-    it('should turn RIGHT (change face)', function() {
+    it('should turn RIGHT (change face)', () => {
         var x = 1,
             y = 1,
             f = 'north';
