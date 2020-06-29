@@ -8,23 +8,23 @@
  * @param {Messenger} messenger The Messenger instance
  * @constructor
  */
-var Bus = function (config, carPark, messenger) {
+const Bus = function (config, carPark, messenger) {
 
     this._config = config,
-	this.carPark = carPark,
-	this._messenger = messenger,
-	this._isFirstStepMade = false,
-	// Storing FACE as an INT and not as a string (such as 'north', 'east',
-	// etc.). INT references index in a config.aDirections array ['NORTH',
-	// 'EAST', 'SOUTH', 'WEST'] At the very beginning coordinates are
-	// undefined. Coordinates get defined after a Bus is correctly
-	// PLACEd X,Y,F
-	this._oCurrentPosition = {
-		x: undefined,
-		y: undefined,
-		f: undefined
-	};
-	
+        this.carPark = carPark,
+        this._messenger = messenger,
+        this._isFirstStepMade = false,
+        // Storing FACE as an INT and not as a string (such as 'north', 'east',
+        // etc.). INT references index in a config.aDirections array ['NORTH',
+        // 'EAST', 'SOUTH', 'WEST'] At the very beginning coordinates are
+        // undefined. Coordinates get defined after a Bus is correctly
+        // PLACEd X,Y,F
+        this._oCurrentPosition = {
+            x: undefined,
+            y: undefined,
+            f: undefined
+        };
+
     /**
      * To PLACE the Bus
      * @param  {INT|String} x X-coordinate
@@ -35,7 +35,7 @@ var Bus = function (config, carPark, messenger) {
      * successfully, it returns a corresponding Error instance
      * @public
      */
-    this.place = function(x, y, f) {
+    this.place = function (x, y, f) {
 
         var arg = {};
 
@@ -70,7 +70,7 @@ var Bus = function (config, carPark, messenger) {
      * any error occurred
      * @public
      */
-    this.move = function() {
+    this.move = function () {
         var x, y, f;
 
         // Check if initial PLACE command was made
@@ -118,7 +118,7 @@ var Bus = function (config, carPark, messenger) {
      * @return {Error|Bus}   If succsess it returs this, if not
      * success, it returns a corresponding Error instance
      */
-    this.right = function() {
+    this.right = function () {
         if (!this._isFirstStepMade) {
             return new Error(this._messenger.getMessage({
                 msg: 'noInitialCommand'
@@ -126,16 +126,16 @@ var Bus = function (config, carPark, messenger) {
         }
         this._oCurrentPosition.f =
             (this._oCurrentPosition.f + 1) > 3 ?
-            0 : this._oCurrentPosition.f + 1;
+                0 : this._oCurrentPosition.f + 1;
         return this;
     };
-	
+
     /**
      * To turn the Bus to the left, that is change its FACE
      * @return {Error|Bus}   If succsess it returs this, if not
      * success, it returns a corresponding Error instance
      */
-    this.left = function() {
+    this.left = function () {
         if (!this._isFirstStepMade) {
             return new Error(this._messenger.getMessage({
                 msg: 'noInitialCommand'
@@ -143,20 +143,20 @@ var Bus = function (config, carPark, messenger) {
         }
         this._oCurrentPosition.f =
             (this._oCurrentPosition.f - 1) < 0 ?
-            3 : this._oCurrentPosition.f - 1;
+                3 : this._oCurrentPosition.f - 1;
         return this;
     };
-	
+
     /**
      * Send a message to a user
      * @param  {Object} msgObj {msg 'msgKey', [anyOtherKeys: ....]}
      * Possible keys are defined in the config.
      * @return {[type]}        [description]
      */
-    this.report = function(msgObj) {
+    this.report = function (msgObj) {
         // Call .report() without any parameters.
         if (!msgObj) {
-            var oPosition = this._getBusPosition();
+            const oPosition = this._getBusPosition();
 
             // Very beginning, no any PLACE yet, coords are undefined
             // return a message "PLACE a Bus to begin", not coords
@@ -178,21 +178,21 @@ var Bus = function (config, carPark, messenger) {
         } else
             return this._messenger.getMessage(msgObj);
     };
-    
+
     /**
      * Send the current locatoion of the bus
      * @return {Object}  {x: correct-int-x, y: correct-int-y, f:
      * correct-FACE-word}. F is returned only UPPERCASED!
     */
     this.currentPosition = function () {
-        var oPosition = this._getBusPosition();
-        return  {
-                    x: oPosition.x,
-                    y: oPosition.y,
-                    f: oPosition.f
-                };
+        const oPosition = this._getBusPosition();
+        return {
+            x: oPosition.x,
+            y: oPosition.y,
+            f: oPosition.f
+        };
     };
-	
+
     /**
      * Validate user input for PLACEX,Y,F command. X and Y should be INTs or a
      * String that can be converted to INT
@@ -204,7 +204,7 @@ var Bus = function (config, carPark, messenger) {
      * correct-FACE-word}. F is returned only UPPERCASED!
      * @private
      */
-    this._validateInput = function(x, y, f) {
+    this._validateInput = function (x, y, f) {
 
         // FACE cannot be undefined
         if (!f) {
@@ -220,7 +220,7 @@ var Bus = function (config, carPark, messenger) {
             }));
         }
 
-        var _f = f.toUpperCase(),
+        const _f = f.toUpperCase(),
             _x = parseInt(x),
             _y = parseInt(y);
 
@@ -253,8 +253,8 @@ var Bus = function (config, carPark, messenger) {
             f: _f
         };
     };
-	
-    this._isCommandValid = function() {};
+
+    this._isCommandValid = function () { };
 
     /**
      * Check if FACE is a valid word, that is 'NORTH', 'EAST', 'SOUTH' or 'WEST'
@@ -262,10 +262,10 @@ var Bus = function (config, carPark, messenger) {
      * @return  {Boolean}
      * @private
      */
-    this._isDirectionValid = function(sFace) {
+    this._isDirectionValid = function (sFace) {
         return this._config.aDirections.indexOf(sFace) !== -1;
     };
-	
+
     /**
      * Update the Bus's position
      * @param   {INT} x x-coordinate
@@ -273,13 +273,13 @@ var Bus = function (config, carPark, messenger) {
      * @param   {String} f FACE, 'NORTH', 'EAST', 'SOUTH' or 'WEST' (uppercased)
      * @private
      */
-    this._setBusPosition = function(x, y, f) {
+    this._setBusPosition = function (x, y, f) {
         this._oCurrentPosition.x = x,
             this._oCurrentPosition.y = y,
             this._oCurrentPosition.f = this._config
-            .aDirections.indexOf(f);
+                .aDirections.indexOf(f);
     };
-	
+
     /**
      * Check if action is performed inside of the playground
      * @param   {INT}  x x-coordinate
@@ -287,29 +287,29 @@ var Bus = function (config, carPark, messenger) {
      * @return  {Boolean}
      * @private
      */
-    this._isOutOfcarPark = function(x, y) {
+    this._isOutOfcarPark = function (x, y) {
         return this.carPark.isOutOfcarPark(x, y);
     };
-	
+
     /**
      * Getter.
      * @return  {Object} {x: int-x, y: int-y, f: FACE-word (uppercased)}
      * @private
      */
-    this._getBusPosition = function() {
+    this._getBusPosition = function () {
         return {
             x: this._oCurrentPosition.x,
             y: this._oCurrentPosition.y,
             f: this._config.aDirections[this._oCurrentPosition.f]
         }
     };
-    
+
     /**
      * Getter.
      * @return  {Object} {x: int-x, y: int-y, f: FACE-word (uppercased)}
      * @private
      */
-    this._resetBusPosition = function() {
+    this._resetBusPosition = function () {
         this._oCurrentPosition.x = undefined;
         this._oCurrentPosition.y = undefined;
         this._oCurrentPosition.f = undefined;
@@ -318,11 +318,11 @@ var Bus = function (config, carPark, messenger) {
     /**
      * These methods are for the sake of testing
      */
-    this._getIsFirstStepMade = function() {
+    this._getIsFirstStepMade = function () {
         return this._isFirstStepMade;
     };
-	
-    this._isFirstStepMadeFunc = function() {
+
+    this._isFirstStepMadeFunc = function () {
         if (!this._isFirstStepMade) {
             return this.report({
                 msg: 'noInitialCommand'
@@ -330,8 +330,8 @@ var Bus = function (config, carPark, messenger) {
         } else
             return true;
     };
-	
-    this._setIsFirstStepMade = function(val) {
+
+    this._setIsFirstStepMade = function (val) {
         this._isFirstStepMade = val;
     };
 
@@ -340,7 +340,7 @@ var Bus = function (config, carPark, messenger) {
      * @return {Messenger} messenger instance
      * @public
      */
-    this.getMessenger = function() {
+    this.getMessenger = function () {
         return this._messenger;
     };
 

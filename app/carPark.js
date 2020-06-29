@@ -6,7 +6,7 @@
  * @param {object} config CarPark's config
  * @constructor
  */
-var CarPark = function (config) {
+const CarPark = function (config) {
     this._config = config;
 
     /**
@@ -15,7 +15,7 @@ var CarPark = function (config) {
      * @param  {INT}  y y-coordinate
      * @return {Boolean}
      */
-    this.isOutOfcarPark = function(x, y) {
+    this.isOutOfcarPark = function (x, y) {
         if (
             (x > (this._config.startPointX + (this._config.lengthX - 1))) ||
             (x < this._config.startPointX) ||

@@ -4,7 +4,7 @@
  * The Messenger class, constructor
  * @param {object} config Messenger's config
  */
-var Messenger = function (config) {
+const Messenger = function (config) {
 	this._config = config || {};
 
 	/**
@@ -13,7 +13,7 @@ var Messenger = function (config) {
 	 * @return {string} - parsed message
 	 * @public
 	 */
-	this.getMessage = function(oData) {
+	this.getMessage = function (oData) {
 		/**
 		 * If no any parameters provided.
 		 * Return a default welcome message.
@@ -37,13 +37,12 @@ var Messenger = function (config) {
 	 * @return {string} - parsed message
 	 * @private
 	 */
-	this._constructMessage = function(oData) {
-		var oCombined = Object.assign({}, oData, this._config.oSubs),
-			str;
+	this._constructMessage = function (oData) {
+		const oCombined = Object.assign({}, oData, this._config.oSubs);
 
-		str = this._config.oMsgs[oCombined.msg].replace(
+		const str = this._config.oMsgs[oCombined.msg].replace(
 			/{(\w+)}/g,
-			function(match, p) {
+			function (match, p) {
 				return oCombined[p];
 			});
 		return str;

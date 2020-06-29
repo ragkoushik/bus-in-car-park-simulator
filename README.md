@@ -11,8 +11,6 @@ Description & Constraints
     - The bus must not exit the carpark during movement. This also includes the initial
             placement of the bus.
     - Any move that would cause the bus to exit the carpark must be ignored.
-
-
             The application should be able to read in any one of the following commands:
                     PLACE X,Y,F
                     MOVE
@@ -39,9 +37,9 @@ Description & Constraints
 Tech Stack
 
     - Node 
-    - Angularjs
-    - Bootstrap
-    - Jasmine
+    - Jasmine    
+    - Angularjs (Front end has been turned off)
+    - Bootstrap (Front end has been turned off)
 
 System Dependencies & Configuration
 
@@ -52,9 +50,10 @@ System Dependencies & Configuration
 
     To run tests of the app, you'll need:
 
-    * jasmine-npm - https://github.com/jasmine/jasmine-npm, to Install it:
-            run on cmd
-            npm install -g jasmine
+    * jasmine-npm - https://github.com/jasmine/jasmine-npm
+
+    * Start with installing all Dependencies
+    npm install
 
 Operating Instructions
 
@@ -64,8 +63,8 @@ Operating Instructions
             To operate the robot bus by typing commands, start the app from the command prompt with 
             no arguments provided and begin type in commands:
 
-            node start.js
-            
+            npm start
+
                 Sample CLI interaction: 
                     Hi there!
                     Begin by placing the Robot on the tabletop - PLACE X, Y, F 
@@ -90,7 +89,7 @@ Operating Instructions
 
             Then run the application providing it the file as the first argument:
 
-            node start.js sampleData\a.txt
+            npm start sampleData\a.txt
 
                 Sample CLI interaction:
                     Reading commands from 'sampleData\a.txt' .... please wait.
@@ -103,10 +102,10 @@ Operating Instructions
                     Robot's position is: 0, 1, NORTH
         
         
-        - The third option is by using a simple user interface.
+        - The third option is by using a simple user interface. *(UI Has been turned off in env)*
             To operate the robot on the user interface, start the server by passing a port number:
                
-            node start.js --port 8000
+            npm start "--port 8000"
             
             Commands can be executed on the user interface similar to the CLI interaction commands OR
             UP, DOWN, LEFT, RIGHT arrow keys can be used to move the bs around the car park. 

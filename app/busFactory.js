@@ -6,9 +6,9 @@
  * The factory returns a bus instance.
  */
 
-var carPark = require('./carPark');
-var Messenger = require('./messenger');
-var config = require('./config');
-var Bus = require('./bus');
+const carPark = require('./carPark');
+const Messenger = require('./messenger');
+const config = require('./config');
+const Bus = require('./bus');
 
 module.exports = new Bus(config.bus, new carPark(config.carPark), new Messenger(config.messenger));
