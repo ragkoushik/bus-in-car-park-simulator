@@ -10,6 +10,7 @@
     "keywords": [],
     "author": "Raghu Koushik",
     "dependencies": {
-        "npm": "^5.7.1"
+        "jasmine": "^3.5.0",
+        "npm": "^5.10.0"
     }
 }

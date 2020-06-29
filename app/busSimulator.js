@@ -39,8 +39,6 @@ stdin.on('data', function(data) {
     outputMesage(data);
 });
 
-
-
 if (argv.length) {
     // Input from front end
     if ( argv[0] !== undefined && argv[0].indexOf('--port') !== -1) { 
